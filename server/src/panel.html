@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel · Enquete 22 x 13</title>
+<style>
+  :root{--bg:#070a16;--card:#0f1424;--card2:#141a2e;--line:rgba(255,255,255,.1);--txt:#e8ecf4;--mut:#8a93a8;--blue:#2f7bff;--red:#ff2d3d;--ok:#2fd27a;--warn:#ffb020}
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(80% 50% at 0 0,rgba(32,90,220,.18),transparent 60%),radial-gradient(80% 50% at 100% 0,rgba(200,24,40,.16),transparent 60%),var(--bg);color:var(--txt);font:14px/1.45 system-ui,"Segoe UI",sans-serif;min-height:100vh}
+  header{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;padding:16px 24px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(7,10,22,.92);backdrop-filter:blur(8px);z-index:5}
+  h1{margin:0;font-size:20px;letter-spacing:.02em} h1 b{color:#6fb0ff} h1 i{font-style:normal;color:#ff6b74}
+  .pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--card2);border:1px solid var(--line);font-size:13px;white-space:nowrap}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--mut)} .dot.ok{background:var(--ok);box-shadow:0 0 8px var(--ok)} .dot.warn{background:var(--warn)} .dot.err{background:var(--red)}
+  .link{margin-left:auto;display:flex;gap:8px;align-items:center}
+  code{background:var(--card2);border:1px solid var(--line);padding:5px 9px;border-radius:8px;font-size:13px;user-select:all}
+  main{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:18px;padding:20px 24px 40px;max-width:1500px;margin:0 auto}
+  section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+  section.wide{grid-column:1/-1}
+  h2{margin:0 0 4px;font-size:16px} .sub{margin:0 0 14px;color:var(--mut);font-size:13px}
+  label{display:block;font-size:12px;color:var(--mut);margin-bottom:4px;letter-spacing:.02em}
+  input,select{background:#0a0e1c;color:var(--txt);border:1px solid rgba(255,255,255,.16);border-radius:9px;padding:8px 10px;font:inherit;min-width:0}
+  input:focus,select:focus{outline:2px solid rgba(47,123,255,.6);outline-offset:0}
+  input[type=number]{width:96px} input[type=range]{padding:0;accent-color:var(--blue)}
+  button{background:#1d2540;color:var(--txt);border:1px solid rgba(255,255,255,.16);border-radius:9px;padding:8px 14px;font:600 13px system-ui,sans-serif;cursor:pointer;white-space:nowrap}
+  button:hover{background:#263052;border-color:rgba(255,255,255,.35)}
+  button.pri{background:linear-gradient(180deg,#2a6dff,#0c3bb0);border-color:#7fb2ff}
+  button.dan{background:linear-gradient(180deg,#ff3340,#a00c16);border-color:#ff8a92}
+  button.ghost{background:transparent}
+  button.b{border-color:#2f7bff;color:#9cc6ff} button.r{border-color:#ff2d3d;color:#ff9aa1}
+  button:disabled{opacity:.4;cursor:default}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
+  .row + .row{margin-top:12px}
+  .grow{flex:1}
+  .chk{display:flex;align-items:center;gap:8px;color:var(--txt);font-size:14px;margin:0;cursor:pointer}
+  .chk input{width:18px;height:18px;accent-color:var(--blue)}
+  .score{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px;margin:6px 0 14px}
+  .side{border-radius:14px;padding:12px 14px;border:1px solid;text-align:center}
+  .side.b{border-color:#2f7bff;background:rgba(47,123,255,.1)} .side.r{border-color:#ff2d3d;background:rgba(255,45,61,.1)}
+  .side .n{font:800 44px/1 system-ui,sans-serif;font-variant-numeric:tabular-nums} .side .l{color:var(--mut);font-size:13px}
+  .phase{text-align:center;color:var(--mut);font-size:13px;min-width:110px} .phase b{display:block;color:var(--txt);font-size:16px}
+  .stats{display:flex;gap:16px;flex-wrap:wrap;color:var(--mut);font-size:13px;margin-top:10px} .stats b{color:var(--txt)}
+  .msg{margin-top:10px;font-size:13px;color:var(--mut);min-height:18px} .msg.err{color:#ff8a92} .msg.ok{color:#7fe3ad}
+  table{width:100%;border-collapse:collapse}
+  th{text-align:left;font-size:12px;color:var(--mut);font-weight:600;padding:6px 8px;border-bottom:1px solid var(--line)}
+  td{padding:8px;border-bottom:1px solid var(--line);vertical-align:middle}
+  td .gname{font-weight:700} td .gpt{color:var(--mut);font-size:12px}
+  .vol{display:flex;align-items:center;gap:6px} .vol input{width:90px} .vol span{width:34px;color:var(--mut);font-size:12px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{padding:5px 10px;border-radius:999px;background:var(--card2);border:1px dashed rgba(255,255,255,.25);font-size:12px;cursor:pointer}
+  .chip:hover{border-color:#7fb2ff}
+  .drop{border:2px dashed rgba(255,255,255,.2);border-radius:14px;padding:18px;text-align:center;color:var(--mut);cursor:pointer;transition:.15s}
+  .drop.over{border-color:#7fb2ff;background:rgba(47,123,255,.08);color:var(--txt)}
+  .alist{margin-top:12px;display:flex;flex-direction:column;gap:6px;max-height:260px;overflow:auto}
+  .aitem{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--card2);border-radius:10px}
+  .aitem span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .log{height:320px;overflow:auto;background:#060914;border:1px solid var(--line);border-radius:12px;padding:8px 10px;font:12.5px/1.5 ui-monospace,Consolas,monospace}
+  .log div{white-space:pre-wrap;word-break:break-word} .log .t{color:#5d667c} .log .warn{color:#ffcf6b} .log .error{color:#ff8a92} .log .ok{color:#7fe3ad}
+  .log .ty{display:inline-block;min-width:64px;color:#8fb2e8}
+  .saved{font-size:12px;color:var(--mut);margin-left:auto;transition:opacity .3s}
+  .empty{color:var(--mut);font-size:13px;padding:10px 0}
+  @media (max-width:520px){ main{grid-template-columns:1fr;padding:14px} header{padding:12px 14px} .link{margin-left:0} }
+</style>
+</head>
+<body>
+<header>
+  <h1>Enquete <b>22</b> × <i>13</i> · Painel</h1>
+  <span class="pill"><span class="dot" id="dTik"></span><span id="sTik">TikTok desconectado</span></span>
+  <span class="pill"><span class="dot" id="dGame"></span><span id="sGame">Jogo fechado</span></span>
+  <div class="link"><span class="sub" style="margin:0">Fonte de navegador no OBS (1080×1920):</span><code id="gameUrl"></code><button id="copyUrl">Copiar</button><button class="ghost" onclick="open('/jogo')">Abrir jogo</button></div>
+</header>
+
+<main>
+  <section>
+    <h2>Conexão com a live</h2>
+    <p class="sub">Coloque o seu @ do TikTok e clique em conectar quando a live estiver no ar. Se cair, ele reconecta sozinho.</p>
+    <div class="row">
+      <div class="grow"><label for="user">Usuário do TikTok</label><input id="user" placeholder="@seu_usuario" style="width:100%"></div>
+      <button class="pri" id="btnConnect">Conectar</button>
+      <button id="btnDisconnect">Desconectar</button>
+    </div>
+    <div class="msg" id="tikMsg"></div>
+    <div class="stats"><span>Comentários <b id="cChat">0</b></span><span>Curtidas <b id="cLike">0</b></span><span>Presentes <b id="cGift">0</b></span><span>Entradas <b id="cJoin">0</b></span></div>
+  </section>
+
+  <section>
+    <h2>Enquete</h2>
+    <div class="score">
+      <div class="side b"><div class="n" id="v22">0</div><div class="l">22 · <span id="lb22">Flávio</span></div></div>
+      <div class="phase"><b id="phase">—</b><span id="phaseSub"></span></div>
+      <div class="side r"><div class="n" id="v13">0</div><div class="l">13 · <span id="lb13">Lula</span></div></div>
+    </div>
+    <div class="row">
+      <button class="pri" id="btnStart">Nova enquete</button>
+      <button id="btnEnd">Encerrar agora</button>
+      <button class="dan" id="btnStop">Parar</button>
+    </div>
+    <div class="row">
+      <span class="sub" style="margin:0 4px 0 0;align-self:center">Votos manuais:</span>
+      <button class="b" data-add="22,1">+1 no 22</button><button class="b" data-add="22,10">+10</button><button class="b" data-add="22,100">+100</button>
+      <button class="r" data-add="13,1">+1 no 13</button><button class="r" data-add="13,10">+10</button><button class="r" data-add="13,100">+100</button>
+    </div>
+    <div class="row">
+      <div><label>Duração (s) · 0 = sem limite</label><input type="number" min="0" data-s="round.duration"></div>
+      <div><label>Intervalo até a próxima (s)</label><input type="number" min="3" data-s="round.restartDelay"></div>
+      <label class="chk"><input type="checkbox" data-s="round.autoRestart"> Recomeçar sozinho</label>
+    </div>
+    <div class="row">
+      <label class="chk"><input type="checkbox" data-s="simulation"> Simular comentários quando a live não estiver conectada (para testar)</label>
+    </div>
+  </section>
+
+  <section>
+    <h2>Votos por comentário e curtida</h2>
+    <p class="sub">Quem comenta uma palavra de um lado vota nele e fica nesse lado: as curtidas e os presentes dessa pessoa vão para lá.</p>
+    <div class="row">
+      <div><label>Nome do 22</label><input data-s="sides.22.label" style="width:130px"></div>
+      <div class="grow"><label>Palavras que votam no 22 (separe por vírgula)</label><input data-s="sides.22.keywords" style="width:100%"></div>
+    </div>
+    <div class="row">
+      <div><label>Nome do 13</label><input data-s="sides.13.label" style="width:130px"></div>
+      <div class="grow"><label>Palavras que votam no 13 (separe por vírgula)</label><input data-s="sides.13.keywords" style="width:100%"></div>
+    </div>
+    <div class="row">
+      <div><label>Votos por comentário</label><input type="number" min="0" data-s="chat.votes"></div>
+      <div><label>Espera por pessoa (s) · 0 = todo comentário vale</label><input type="number" min="0" data-s="chat.cooldown"></div>
+    </div>
+    <div class="row">
+      <div><label>A cada quantas curtidas</label><input type="number" min="0" data-s="likes.every"></div>
+      <div><label>Ganha quantos votos · 0 = curtida não vota</label><input type="number" min="0" data-s="likes.votes"></div>
+    </div>
+    <div class="row">
+      <div class="grow"><label>Testar um comentário</label><input id="testChat" placeholder="ex.: 22 22 22" style="width:100%"></div>
+      <button id="btnTestChat">Enviar teste</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Volume</h2>
+    <p class="sub">A música de quem está ganhando vem das pastas <b>audio-quem-ta-ganhando\direita</b> (22) e <b>\esquerda</b> (13). Troque o arquivo lá para mudar a música.</p>
+    <div class="row">
+      <div class="grow"><label>Música de quem está ganhando</label><div class="vol"><input type="range" min="0" max="100" data-s="audio.music" style="width:100%"><span data-v="audio.music"></span></div></div>
+    </div>
+    <div class="row">
+      <div class="grow"><label>Áudios dos presentes (geral)</label><div class="vol"><input type="range" min="0" max="100" data-s="audio.gifts" style="width:100%"><span data-v="audio.gifts"></span></div></div>
+    </div>
+    <div class="stats"><span>Música do 22: <b id="mus22">—</b></span><span>Música do 13: <b id="mus13">—</b></span></div>
+  </section>
+
+  <section class="wide">
+    <div class="row" style="align-items:center"><h2 style="margin:0">Presentes</h2><span class="saved" id="saved"></span></div>
+    <p class="sub" style="margin-top:4px">Escolha o presente, quantos votos cada um vale e, se quiser, um áudio que toca a cada vez que alguém mandar. Combos contam certo: 5 rosas com 10 votos cada = 50 votos.</p>
+    <div class="row">
+      <div><label>Adicionar presente</label><select id="giftPick"></select></div>
+      <div id="customWrap" style="display:none"><label>Nome do presente (como o TikTok manda)</label><input id="giftCustom" placeholder="ex.: Rose"></div>
+      <button class="pri" id="btnAddGift">Adicionar</button>
+    </div>
+    <div class="row" id="recentWrap" style="display:none"><div class="grow"><label>Recebidos nesta live (clique para criar a regra)</label><div class="chips" id="recent"></div></div></div>
+    <div style="overflow:auto;margin-top:14px">
+      <table>
+        <thead><tr><th>Presente</th><th>Votos por presente</th><th>Vai para</th><th>Áudio</th><th>Volume</th><th>Testar</th><th></th></tr></thead>
+        <tbody id="rules"></tbody>
+      </table>
+    </div>
+    <div class="row" style="margin-top:16px">
+      <div><label>Outros presentes (sem regra): votos por moeda</label><input type="number" min="0" data-s="otherGifts.votesPerCoin"></div>
+      <div><label>Vão para</label><select data-s="otherGifts.side"><option value="user">Lado de quem mandou</option><option value="22">Sempre o 22</option><option value="13">Sempre o 13</option></select></div>
+      <span class="sub" style="margin:0;align-self:center">Ex.: 10 por moeda → um presente de 5 moedas = 50 votos. Use 0 para só os presentes da tabela valerem.</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Áudios dos presentes</h2>
+    <p class="sub">Ficam na pasta <b>audios-presentes</b>. Aceita MP3, WAV, OGG, M4A.</p>
+    <div class="drop" id="drop">Arraste os áudios aqui ou <u>clique para escolher</u><input type="file" id="file" accept="audio/*,.mp3,.wav,.ogg,.m4a" multiple hidden></div>
+    <div class="alist" id="alist"></div>
+  </section>
+
+  <section>
+    <div class="row" style="align-items:center"><h2 style="margin:0">Log ao vivo</h2><button class="ghost" id="btnClearLog" style="margin-left:auto">Limpar</button></div>
+    <div class="log" id="log" style="margin-top:12px"></div>
+  </section>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const api=(p,body,method)=>fetch(p,{method:method||(body?'POST':'GET'),headers:body?{'Content-Type':'application/json'}:{},body:body?JSON.stringify(body):undefined}).then(r=>r.json());
+let S=null, CATALOG=[], AUDIOS=[], snap=null, deadline=0, restartAt=0;
+
+// ---------- configurações (salva sozinho) ----------
+const getPath=(o,p)=>p.split('.').reduce((a,k)=>a&&a[k],o);
+const setPath=(o,p,v)=>{ const ks=p.split('.'), last=ks.pop(); ks.reduce((a,k)=>a[k]??=({}),o)[last]=v; };
+let saveT=0;
+function save(){ clearTimeout(saveT); $('saved').textContent='salvando…';
+  saveT=setTimeout(async()=>{ const r=await api('/api/settings',S); if(r.ok){ S=r.settings; $('saved').textContent='salvo ✓'; } },500); }
+function fillInputs(){
+  for(const el of document.querySelectorAll('[data-s]')){
+    if(el===document.activeElement) continue;
+    const v=getPath(S,el.dataset.s);
+    if(el.type==='checkbox') el.checked=!!v; else el.value=Array.isArray(v)?v.join(', '):v;
+  }
+  for(const el of document.querySelectorAll('[data-v]')) el.textContent=getPath(S,el.dataset.v)+'%';
+}
+for(const el of document.querySelectorAll('[data-s]')){
+  el.addEventListener(el.type==='range'||el.type==='checkbox'||el.tagName==='SELECT'?'input':'change',()=>{
+    let v=el.type==='checkbox'?el.checked:el.type==='number'||el.type==='range'?Number(el.value):el.value;
+    if(el.dataset.s.endsWith('keywords')) v=String(v).split(',').map(s=>s.trim()).filter(Boolean);
+    setPath(S,el.dataset.s,v); fillInputs(); save();
+  });
+}
+
+// ---------- presentes ----------
+function catalogInfo(name){ const k=name.toLowerCase().replace(/[^a-z0-9]/g,''); return CATALOG.find(g=>g.name.toLowerCase().replace(/[^a-z0-9]/g,'')===k); }
+function fillPick(){
+  $('giftPick').innerHTML=CATALOG.map((g,i)=>`<option value="${i}">${esc(g.pt)}${g.pt!==g.name?' ('+esc(g.name)+')':''} · ${g.coins} moeda${g.coins>1?'s':''}</option>`).join('')+'<option value="custom">Outro (digitar o nome)…</option>';
+}
+$('giftPick').onchange=()=>$('customWrap').style.display=$('giftPick').value==='custom'?'':'none';
+function addRule(name,aliases){
+  name=String(name||'').trim(); if(!name) return;
+  if(S.gifts.some(g=>g.name.toLowerCase()===name.toLowerCase())) return flash('Esse presente já está na tabela');
+  const c=catalogInfo(name);
+  S.gifts.push({name,aliases:aliases??(c&&c.pt!==c.name?c.pt:''),votes:10*Math.max(1,c?c.coins:1),side:'user',audio:'',volume:100});
+  renderRules(); save();
+}
+$('btnAddGift').onclick=()=>{ const v=$('giftPick').value; if(v==='custom'){ addRule($('giftCustom').value); $('giftCustom').value=''; } else addRule(CATALOG[v].name); };
+function audioOptions(sel){ return '<option value="">Sem áudio</option>'+AUDIOS.map(a=>`<option ${a===sel?'selected':''}>${esc(a)}</option>`).join('')+(sel&&!AUDIOS.includes(sel)?`<option selected value="${esc(sel)}">${esc(sel)} (apagado)</option>`:''); }
+function renderRules(){
+  const tb=$('rules');
+  if(!S.gifts.length){ tb.innerHTML='<tr><td colspan="7" class="empty">Nenhum presente configurado. Os presentes usam a regra de "outros presentes" abaixo.</td></tr>'; return; }
+  tb.innerHTML=S.gifts.map((g,i)=>{ const c=catalogInfo(g.name); return `<tr data-i="${i}">
+    <td><div class="gname">${esc(c?c.pt:g.name)}</div><div class="gpt">${esc(g.name)}${c?' · '+c.coins+' moeda'+(c.coins>1?'s':''):''}</div></td>
+    <td><input type="number" min="0" data-k="votes" value="${g.votes}"></td>
+    <td><select data-k="side"><option value="user" ${g.side==='user'?'selected':''}>Lado de quem mandou</option><option value="22" ${g.side==='22'?'selected':''}>Sempre o 22</option><option value="13" ${g.side==='13'?'selected':''}>Sempre o 13</option></select></td>
+    <td><div class="row" style="flex-wrap:nowrap"><select data-k="audio" style="max-width:200px">${audioOptions(g.audio)}</select><button class="ghost" data-play title="Ouvir">▶</button></div></td>
+    <td><div class="vol"><input type="range" min="0" max="100" data-k="volume" value="${g.volume}"><span>${g.volume}%</span></div></td>
+    <td><div class="row" style="flex-wrap:nowrap"><button class="b" data-test="22">22</button><button class="r" data-test="13">13</button></div></td>
+    <td><button class="ghost" data-del title="Remover">✕</button></td></tr>`; }).join('');
+}
+$('rules').addEventListener('input',e=>{
+  const tr=e.target.closest('tr'), k=e.target.dataset.k; if(!tr||!k) return;
+  const g=S.gifts[tr.dataset.i]; g[k]=e.target.type==='number'||e.target.type==='range'?Number(e.target.value):e.target.value;
+  if(k==='volume') e.target.nextElementSibling.textContent=g.volume+'%';
+  save();
+});
+let preview=null;
+$('rules').addEventListener('click',e=>{
+  const tr=e.target.closest('tr'); if(!tr) return; const i=+tr.dataset.i, g=S.gifts[i];
+  if(e.target.closest('[data-del]')){ S.gifts.splice(i,1); renderRules(); save(); }
+  else if(e.target.closest('[data-play]')) playPreview(g.audio,g.volume);
+  else if(e.target.closest('[data-test]')) api('/api/test/gift',{name:g.name,count:1,side:e.target.closest('[data-test]').dataset.test});
+});
+function playPreview(file,vol=100){ if(preview){ preview.pause(); preview=null; } if(!file) return flash('Escolha um áudio primeiro');
+  preview=new Audio('/audios/'+encodeURIComponent(file)); preview.volume=vol/100; preview.play(); }
+function renderRecent(list){
+  const missing=list.filter(g=>!S.gifts.some(r=>[r.name,...r.aliases.split(',')].some(n=>n.trim().toLowerCase()===g.name.toLowerCase())));
+  $('recentWrap').style.display=missing.length?'':'none';
+  $('recent').innerHTML=missing.map(g=>`<span class="chip" data-name="${esc(g.name)}">+ ${esc(g.name)} · ${g.coins} moeda${g.coins>1?'s':''} (${g.n}x)</span>`).join('');
+}
+$('recent').onclick=e=>{ const c=e.target.closest('[data-name]'); if(c){ addRule(c.dataset.name); c.remove(); } };
+
+// ---------- áudios ----------
+function renderAudios(){
+  $('alist').innerHTML=AUDIOS.length?AUDIOS.map(a=>`<div class="aitem"><button class="ghost" data-p="${esc(a)}">▶</button><span title="${esc(a)}">${esc(a)}</span><button class="ghost" data-d="${esc(a)}" title="Apagar">🗑</button></div>`).join(''):'<div class="empty">Nenhum áudio ainda.</div>';
+  renderRules();
+}
+$('alist').onclick=async e=>{
+  const p=e.target.closest('[data-p]'), d=e.target.closest('[data-d]');
+  if(p) playPreview(p.dataset.p);
+  if(d && confirm('Apagar '+d.dataset.d+'?')){ const r=await api('/api/audios/'+encodeURIComponent(d.dataset.d),null,'DELETE'); AUDIOS=r.audios; renderAudios(); }
+};
+async function upload(files){
+  for(const f of files){
+    const r=await fetch('/api/audios?name='+encodeURIComponent(f.name),{method:'POST',body:f}).then(r=>r.json());
+    if(r.ok){ AUDIOS=r.audios; flash('Áudio adicionado: '+r.name,'ok'); } else flash(f.name+': '+r.error);
+  }
+  renderAudios();
+}
+$('drop').onclick=()=>$('file').click();
+$('file').onchange=()=>{ upload([...$('file').files]); $('file').value=''; };
+$('drop').ondragover=e=>{ e.preventDefault(); $('drop').classList.add('over'); };
+$('drop').ondragleave=()=>$('drop').classList.remove('over');
+$('drop').ondrop=e=>{ e.preventDefault(); $('drop').classList.remove('over'); upload([...e.dataTransfer.files]); };
+
+// ---------- enquete / conexão ----------
+const PHASES={idle:'Parada',count:'Começando',play:'Ao vivo',end:'Encerrada'};
+function renderSnap(s){
+  snap=s; $('v22').textContent=s.v[22]; $('v13').textContent=s.v[13];
+  $('lb22').textContent=s.sides[22].label; $('lb13').textContent=s.sides[13].label;
+  $('phase').textContent=PHASES[s.phase]||s.phase;
+  deadline=s.remaining==null?0:Date.now()+s.remaining; restartAt=s.restartIn==null?0:Date.now()+s.restartIn;
+}
+setInterval(()=>{ if(!snap) return; let t='';
+  if(snap.phase==='play') t=deadline?Math.ceil((deadline-Date.now())/1000)+' s restantes':'sem limite de tempo';
+  else if(snap.phase==='end') t=restartAt?'próxima em '+Math.max(0,Math.ceil((restartAt-Date.now())/1000))+' s':'aguardando';
+  if(snap.pending) t+=(t?' · ':'')+snap.pending+' presente(s) na fila';
+  $('phaseSub').textContent=t; },300);
+function renderStatus(st){
+  const t=st.tiktok;
+  $('dTik').className='dot '+(t.listening?'ok':t.stopped?'':t.error?'err':'warn');
+  $('sTik').textContent=t.listening?'Ao vivo: @'+t.username:t.stopped||!t.username?'TikTok desconectado':'Conectando em @'+t.username+'…';
+  $('tikMsg').textContent=t.listening?'Ouvindo comentários, curtidas e presentes.':t.error||'';
+  $('tikMsg').className='msg '+(t.listening?'ok':t.error?'err':'');
+  $('dGame').className='dot '+(st.games?'ok':'');
+  $('sGame').textContent=st.games?'Jogo aberto ('+st.games+')':'Jogo fechado';
+  $('cChat').textContent=st.events.chat; $('cLike').textContent=st.events.like; $('cGift').textContent=st.events.gift; $('cJoin').textContent=st.events.join;
+}
+$('btnConnect').onclick=async()=>{ const r=await api('/api/connect',{username:$('user').value}); if(!r.ok) flash('Coloque um usuário válido do TikTok'); };
+$('btnDisconnect').onclick=()=>api('/api/disconnect',{});
+$('btnStart').onclick=()=>api('/api/round/start',{});
+$('btnEnd').onclick=()=>api('/api/round/end',{});
+$('btnStop').onclick=()=>api('/api/round/stop',{});
+for(const b of document.querySelectorAll('[data-add]')) b.onclick=()=>{ const [side,amount]=b.dataset.add.split(','); api('/api/votes',{side,amount}); };
+$('btnTestChat').onclick=()=>{ api('/api/test/chat',{comment:$('testChat').value}); };
+$('testChat').onkeydown=e=>{ if(e.key==='Enter') $('btnTestChat').click(); };
+
+// ---------- log ----------
+function addLog(e){
+  const l=$('log'), stick=l.scrollTop+l.clientHeight>=l.scrollHeight-20, d=document.createElement('div');
+  d.className=e.level; d.innerHTML=`<span class="t">${new Date(e.t).toLocaleTimeString('pt-BR')}</span> <span class="ty">[${esc(e.type)}]</span> ${esc(e.msg)}`;
+  l.appendChild(d); while(l.children.length>500) l.firstChild.remove();
+  if(stick) l.scrollTop=l.scrollHeight;
+}
+$('btnClearLog').onclick=()=>{ api('/api/logs/clear',{}); $('log').innerHTML=''; };
+function flash(m,cls='err'){ $('tikMsg').textContent=m; $('tikMsg').className='msg '+cls; }
+
+$('gameUrl').textContent=location.origin+'/jogo';
+$('copyUrl').onclick=()=>{ navigator.clipboard.writeText(location.origin+'/jogo'); $('copyUrl').textContent='Copiado!'; setTimeout(()=>$('copyUrl').textContent='Copiar',1500); };
+
+async function boot(){
+  const st=await api('/api/state');
+  S=st.settings; CATALOG=st.catalog; AUDIOS=st.audios;
+  $('user').value=S.tiktokUsername?'@'+S.tiktokUsername:'';
+  $('mus22').textContent=st.music[22]||'nenhuma (pasta vazia)'; $('mus13').textContent=st.music[13]||'nenhuma (pasta vazia)';
+  fillPick(); fillInputs(); renderAudios(); renderSnap(st.poll); renderStatus(st.status); renderRecent(st.recentGifts);
+  $('log').innerHTML=''; st.logs.forEach(addLog);
+  setInterval(async()=>{ const r=await api('/api/state'); renderRecent(r.recentGifts); },5000);
+  const es=new EventSource('/events?c=panel');
+  es.addEventListener('state',e=>renderSnap(JSON.parse(e.data)));
+  es.addEventListener('status',e=>renderStatus(JSON.parse(e.data)));
+  es.addEventListener('log',e=>addLog(JSON.parse(e.data)));
+  es.onerror=()=>{ $('dTik').className='dot err'; $('sTik').textContent='Servidor desligado: rode o INICIAR.bat'; };
+}
+boot();
+</script>
+</body>
+</html>

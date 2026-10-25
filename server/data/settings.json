@@ -1,0 +1,51 @@
+{
+  "round": {
+    "duration": 60,
+    "autoRestart": true,
+    "restartDelay": 8
+  },
+  "sides": {
+    "13": {
+      "label": "Lula",
+      "keywords": [
+        "13",
+        "lula"
+      ]
+    },
+    "22": {
+      "label": "Flávio",
+      "keywords": [
+        "22",
+        "flavio",
+        "bolsonaro"
+      ]
+    }
+  },
+  "chat": {
+    "votes": 1,
+    "cooldown": 0
+  },
+  "likes": {
+    "every": 10,
+    "votes": 1
+  },
+  "gifts": [
+    {
+      "name": "Rose",
+      "aliases": "Rosa",
+      "votes": 10,
+      "side": "user",
+      "audio": "",
+      "volume": 100
+    }
+  ],
+  "otherGifts": {
+    "votesPerCoin": 10,
+    "side": "user"
+  },
+  "audio": {
+    "music": 80,
+    "gifts": 100
+  },
+  "simulation": true
+}

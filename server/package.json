@@ -1,0 +1,15 @@
+{
+  "name": "enquete-22x13-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Servidor da live: TikTok (comentarios, curtidas, presentes) -> votos da enquete -> jogo no OBS + painel web",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "socks-proxy-agent": "^8.0.5",
+    "tiktok-live-connector": "^2.0.0"
+  }
+}
